@@ -1,6 +1,15 @@
 var calendar = [];
 var current = [];
 var next = [];
+var drawTimeout;
+
+function queueDraw() {
+  if (drawTimeout) clearTimeout(drawTimeout);
+  drawTimeout = setTimeout(function() {
+    drawTimeout = undefined;
+    redraw();
+  }, 60000 - (Date.now() % 60000));
+}
 
 function updateCalendar() {
   calendar = require("Storage").readJSON("android.calendar.json",true)||[];
@@ -124,11 +133,12 @@ function redraw() {
   } else {
     drawCurrentEvents(30);
   }
+  queueDraw();
 }
 
 g.clear(1);
 fullRedraw();
-var minuteInterval = setInterval(redraw, 60 * 1000);
+queueDraw();
 
 Bangle.setUI("clock");
 Bangle.loadWidgets();
