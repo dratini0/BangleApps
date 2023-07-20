@@ -126,7 +126,7 @@ function redraw() {
   }
 }
 
-g.clear();
+g.clear(1);
 fullRedraw();
 var minuteInterval = setInterval(redraw, 60 * 1000);
 
