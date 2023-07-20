@@ -1,6 +1,7 @@
 var calendar = [];
 var current = [];
 var next = [];
+var currentDay;
 var drawTimeout;
 
 function queueDraw() {
@@ -128,7 +129,9 @@ function fullRedraw() {
 
 function redraw() {
   g.reset();
-  if (current.find(e=>!isActive(e)) || next.find(isActive)) {
+  let day = (new Date()).getDate();
+  if (day !== currentDay || current.find(e=>!isActive(e)) || next.find(isActive)) {
+    currentDay = day;
     fullRedraw();
   } else {
     drawCurrentEvents(30);
@@ -137,8 +140,7 @@ function redraw() {
 }
 
 g.clear(1);
-fullRedraw();
-queueDraw();
+redraw();
 
 Bangle.setUI("clock");
 Bangle.loadWidgets();
